@@ -27,11 +27,7 @@ INC += -I$(rg_top_dir)/rg_apps/userspace/gpl/apps/expat/include
 
 LIB += -L$(user_top_dir)/curl/install/lib
 LIB += -L$(rg_top_dir)/rg_apps/userspace/gpl/apps/expat/lib
-# LIB += -L$(rg_top_dir)/rg_apps/userspace/public/libs/openssl
 LIB += -L$(rootfs_top_dir)/lib/OpenSSL_0.908/lib
-
-# LIB_DIR += -Wl,-rpath=$(user_top_dir)/curl/install/lib
-# LIB_DIR += -Wl,-rpath=$(rg_top_dir)/rg_apps/userspace/gpl/apps/expat/lib
 
 BIN=speedtest
 
@@ -39,13 +35,12 @@ BIN=speedtest
 
 all: $(BIN)
 
+speedtest: main.c
+	$(CC) $(CFLAGS) $(INC) $(LIB) $(LDLIBS) -o $(BIN) main.c
+
+romfs:
+	$(ROMFSINST) /bin/$(BIN)
+
 clean:
 	-$(RM) *.o
 	-$(RM) $(BIN)
-
-speedtest: main.c
-	$(CC) $(CFLAGS) $(INC) $(LIB) $(LDLIBS) -o speedtest main.c
-# 	$(CC) $(CFLAGS) $(INC) $(LIB) $(LIB_DIR) $(LDLIBS) -o speedtest main.c
-
-romfs:
-	$(ROMFSINST) /bin/$(EXEC)
